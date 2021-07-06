@@ -1,0 +1,50 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateAuthorizationTables
+{
+    public function up()
+    {
+        $connection = config('database.default');
+
+        Schema::connection($connection)->create(config('authorization.role_table'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('display')->unique();
+            $table->integer('level');
+            $table->string('domain')->nullable();
+            $table->string('guard')->default('web');
+            $table->timestamps();
+        });
+
+        Schema::connection($connection)->create(config('authorization.permission_table'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('display')->unique();
+            $table->integer('level');
+            $table->string('domain')->nullable();
+            $table->string('guard')->default('web');
+            $table->string('resource_type')->default('route');
+            $table->string('resource_name')->nullable();
+            $table->json('resource_content')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection($connection)->create(config('authorization.has_roles_pivot_table'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger(config('authorization.role_key'));
+            $table->bigInteger(config('authorization.has_roles_pivot_key'));
+            $table->string(config('authorization.has_roles_pivot_type'));
+        });
+
+        Schema::connection($connection)->create(config('authorization.has_permissions_pivot_table'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger(config('authorization.permission_key'));
+            $table->bigInteger(config('authorization.has_permissions_pivot_key'));
+            $table->string(config('authorization.has_permissions_pivot_type'));
+        });
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "name": "blackkat98/laravel-authorization",
+    "description": "An Authorization Package for Laravel",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Blackkat98\\LaravelAuthorization\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "blackkat98",
+            "email": "nam.th.200698@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/database": "9.x-dev"
+    }
+}
